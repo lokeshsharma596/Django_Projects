@@ -3,14 +3,14 @@ from .forms import UserRegisterForm,UserUpdateForm,ProfileUpdateForm
 from django.contrib import messages
 from .models import Post
 from django.contrib.auth.decorators import login_required
-
+from django.views.generic import ListView
 
 # Create your views here.
 def home(request):
     content = {
         'Posts': Post.objects.all()
     }
-    return render(request, 'blog/index.html',content)
+    return render(request, 'blog/home.html',content)
 
 
 def register(request):
@@ -50,3 +50,9 @@ def profile(request):
 
 def about(request):
     return render(request,'blog/about.html')
+
+class PostlistView(ListView):
+    model=Post
+    template_name = 'blog/home.html' #<app>/<model>_<viewtype>.html
+    context_object_name = 'Posts'
+    ordering = ['-date_posted']
